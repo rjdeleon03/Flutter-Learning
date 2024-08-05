@@ -11,23 +11,25 @@ import 'sample_item_details_view.dart';
 class SampleItemListView extends StatefulWidget {
   const SampleItemListView({
     super.key,
-    this.items = const [],
   });
 
   static const routeName = '/';
 
-  final List<News> items;
+  
 
   @override
   State<SampleItemListView> createState() => _SampleItemListViewState();
 }
 
 class _SampleItemListViewState extends State<SampleItemListView> {
+  
+  List<News> items = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News List'),
+        title: const Text('What\'s News?'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
