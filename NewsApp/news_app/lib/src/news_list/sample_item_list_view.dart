@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -49,12 +48,16 @@ class _SampleItemListViewState extends State<SampleItemListView> {
         // scroll position when a user leaves and returns to the app after it
         // has been killed while running in the background.
         restorationId: 'sampleItemListView',
-        itemCount: widget.items.length,
+        itemCount: items.length,
         itemBuilder: (BuildContext context, int index) {
-          final item = widget.items[index];
+          final item = items[index];
 
           return ListTile(
-              title: Text('News ${item.title}'),
+              isThreeLine: true,
+              title: Text(item.title),
+              subtitle: Text(
+                item.content,
+                maxLines: 2,),
               leading: const CircleAvatar(
                 // Display the Flutter Logo image asset.
                 foregroundImage: AssetImage('assets/images/flutter_logo.png'),
@@ -63,9 +66,10 @@ class _SampleItemListViewState extends State<SampleItemListView> {
                 // Navigate to the details page. If the user leaves and returns to
                 // the app after it has been killed while running in the
                 // background, the navigation stack is restored.
-                Navigator.restorablePushNamed(
+                Navigator.pushNamed(
                   context,
                   SampleItemDetailsView.routeName,
+                  arguments: item
                 );
               });
         },
@@ -74,8 +78,11 @@ class _SampleItemListViewState extends State<SampleItemListView> {
   }
 
   Future<void> navigateToCreate(BuildContext buildContext) async {
-    final newNews = Navigator.pushNamed(buildContext, SettingsView.routeName);
-    debugPrint("news: ${jsonEncode(newNews as News)}");
-    setState(() => widget.items.add(newNews as News));
+    final newNews = await Navigator.pushNamed(buildContext, CreateNewsView.routeName);
+    if (!context.mounted) return;
+    debugPrint("news: ${jsonEncode(newNews)}");
+    if(newNews != null) {
+      setState(() => items.add(newNews as News));
+    }
   }
 }

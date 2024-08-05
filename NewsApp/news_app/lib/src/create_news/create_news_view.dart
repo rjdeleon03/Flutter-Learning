@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:news_app/src/news_list/news.dart';
 
@@ -7,8 +9,8 @@ import 'create_news_controller.dart';
 ///
 /// When a user changes a setting, the SettingsController is updated and
 /// Widgets that listen to the SettingsController are rebuilt.
-class SettingsView extends StatelessWidget {
-  const SettingsView({super.key, required this.controller});
+class CreateNewsView extends StatelessWidget {
+  const CreateNewsView({super.key, required this.controller});
 
   static const routeName = '/settings';
   static const Widget verticalSpacer = SizedBox(height: 24);
@@ -76,7 +78,9 @@ class SettingsView extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      Navigator.pop(context, News(titleTextController.text, contentTextController.text));
+                      var newNews = News(titleTextController.text, contentTextController.text);
+                      debugPrint("news: ${jsonEncode(newNews)}");
+                      Navigator.pop(context, newNews);
                     }
                   },
                   icon: const Icon(Icons.save),
